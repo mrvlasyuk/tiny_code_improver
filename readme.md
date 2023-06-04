@@ -1,8 +1,11 @@
 # TinyCodeImprover
 
-![TinyCodeImprover demo](https://s11.gifyu.com/images/Suc53.gif)
 
 TinyCodeImprover is a tiny project designed to help developers work with code in the context of an entire project using GPT-4. It simplifies the process of getting help from GPT by allowing you to easily add files from your project to the prompt context. With TinyCodeImprover, you can ask questions about your code, request it to fix issues, find bugs, or even write new features!
+
+## Demo
+
+![demo](https://github.com/mrvlasyuk/mrvlasyuk.github.io/raw/main/assets/code_gif.gif)
 
 ## Table of Contents
 
