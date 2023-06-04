@@ -9,6 +9,7 @@ class CodeImprover:
     def __init__(self, yaml_path):
         logger.info(f"Initializing CodeImprover for {yaml_path}")
         self.texts = {}
+        self.files = []
         self.config = None
         self.steps_prompt = None
         self.critic_prompt = None
@@ -21,7 +22,8 @@ class CodeImprover:
         self.full_text = self.get_full_text()
         #
         self.gpt.add_user_message(self.full_text)
-        logger.debug(f"Prefix: {self.full_text[:500]}")
+        logger.info(f"Prefix: {self.full_text[:500]}\n...")
+        logger.info(f"Files added to context: {self.files}")
         #
 
     def load_config(self, yaml_path):
@@ -32,10 +34,10 @@ class CodeImprover:
         self.resolver_prompt = self.config["resolver_prompt"]
 
     def load_texts(self):
-        files = self.config["files"]
         directory = self.config["directory"]
+        self.files = self.config["files"]
         self.texts = {}
-        for path in files:
+        for path in self.files:
             with open(f"{directory}/{path}") as fp:
                 self.texts[path] = fp.read()
 
