@@ -7,23 +7,20 @@ TinyCodeImprover is a tiny project designed to help developers work with code in
 ## Table of Contents
 
 - [Installation](#installation)
+- [Configuration](#configuration)
 - [Usage and Examples](#usage-and-examples)
 - [Features and Functionality](#features-and-functionality)
+- [Success Stories and Use Cases](#success-stories-and-use-cases)
 - [Code Structure and Organization](#code-structure-and-organization)
 - [License](#license)
-- [Success Stories and Use Cases](#success-stories-and-use-cases)
 
 ## Installation
 
-Clone the repository and navigate to the project directory:
+Clone the repository and navigate to the project directory and install the required packages:
 
 ```bash
 git clone https://github.com/mrvlasyuk/code_improver_gpt.git
 cd code_improver_gpt
-```
-Install the required packages:
-
-```bash
 pip install -r requirements.txt
 ```
 
@@ -32,6 +29,21 @@ Create a `.env` file in the project directory and add your OpenAI API key:
 ```
 OPENAI_KEY=your_api_key_here
 ```
+
+## Configuration
+
+Edit the `config.yaml` file to list the directory and files of your project:
+
+```yaml
+project_name: YourProjectName
+directory: "path/to/your/project"
+files:
+  - file1.py
+  - file2.py
+  - file3.py
+```
+
+This will allow TinyCodeImprover to include the specified files in the GPT-4 prompt context.
 
 ## Usage and Examples
 
@@ -55,6 +67,12 @@ You can also use special commands like `.critic` to ask GPT-4 to critique its ow
 - **Critic feature**: After asking GPT-4 to fix or recommend something, you can use the `.critic` command to ask it to critique its own answer. This helps in identifying errors in its own logic. In my experience he found bugs in his own code in ~30% of cases.
 - **Customizable prompts**: You can easily customize prompts in TinyCodeImprover, which helps in getting more accurate and relevant responses from GPT-4.
 
+## Success Stories and Use Cases
+
+- **Improving itself**: TinyCodeImprover was used extensively to improve its own code. For example, it added a nice input library `prompt_toolkit` for a better user experience.
+- **My fastest README ever**: GPT-4 wrote a README for this project in just a minute using TinyCodeImprover. [see gif above]
+- **HTML & CSS guru**: TinyCodeImprover has helped me fix numerous HTML & CSS issues in several projects. I've learned a few CSS tricks from it.
+
 ## Code Structure and Organization
 
 TinyCodeImprover consists of several Python files:
@@ -62,13 +80,6 @@ TinyCodeImprover consists of several Python files:
 - `utils.py`: Contains utility functions and classes for working with GPT-4 and handling user input.
 - `chatgpt.py`: Implements the main ChatGPT class, which handles communication with GPT-4 and manages the conversation context.
 - `code_improver.py`: The main script that starts the interactive dialog and processes user commands.
-
-## Success Stories and Use Cases
-
-- **Improving itself**: TinyCodeImprover was used to improve its own code. It added a nice input library () for a better user experience.
-- **Fastest README ever**: GPT-4 wrote a README for this project in just 1 minute using TinyCodeImprover. [see gif above]
-- **HTML & CSS guru**: TinyCodeImprover has helped me to fix HTML & CSS issues in my projects. I've learned many tricks from it.
-
 
 ## License
 

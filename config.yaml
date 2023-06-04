@@ -1,4 +1,4 @@
-project_name: CodeImprover
+project_name: TinyCodeImprover
 directory: "."
 files:
   - utils.py
@@ -6,6 +6,7 @@ files:
   - config.yaml
   - code_improver.py
   - Story_bullet_points.md
+  - readme.md
 
 #
 model: gpt-4 # gpt-3.5-turbo
