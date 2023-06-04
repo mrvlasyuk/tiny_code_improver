@@ -1,0 +1,6 @@
+openai
+python-dotenv
+tiktoken
+prompt_toolkit
+loguru
+PyYAML
