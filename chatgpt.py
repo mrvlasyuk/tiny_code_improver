@@ -15,7 +15,6 @@ class ChatGPT:
 
         self.prev_messages = prev_messages or []
         self.model = utils.Model(model_name)
-        self.max_tokens = 30_000
         self.min_chunk = 10
 
     async def generate_reply(self, prompt, prev_messages=None):
@@ -23,11 +22,6 @@ class ChatGPT:
 
         cut_messages = prev_messages or self.prev_messages
         messages = [self.system_message] + cut_messages + my_msgs
-        num_tokens = self.get_num_tokens(messages)
-        assert (
-            num_tokens <= self.max_tokens
-        ), f"too many tokens: {num_tokens} > {self.max_tokens}"
-        print(f"{num_tokens = }")
 
         stream = self.model.get_gpt_reply_stream(
             messages=messages, min_chunk=self.min_chunk

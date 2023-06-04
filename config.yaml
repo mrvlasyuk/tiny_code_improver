@@ -8,7 +8,7 @@ files:
   - Story_bullet_points.md
 
 #
-model: gpt-4
+model: gpt-4 # gpt-3.5-turbo
 #
 role: "You play the role of a professional developer obsessed with clean code."
 #

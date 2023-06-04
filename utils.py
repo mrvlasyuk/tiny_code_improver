@@ -57,6 +57,9 @@ class Model:
         used_tokens = self.get_num_tokens_for_msgs(messages)
         tokens_left = self.max_tokens - used_tokens
         options = {**OPENAI_OPTIONS, "max_tokens": tokens_left}
+        print(f"{used_tokens = }, {tokens_left = }")
+        assert tokens_left > 0, "Too many tokens in the context"
+
         try:
             stream = await openai.ChatCompletion.acreate(
                 model=self.model,
