@@ -22,8 +22,8 @@ TinyCodeImprover is a tiny project designed to help developers work with code in
 Clone the repository and navigate to the project directory and install the required packages:
 
 ```bash
-git clone https://github.com/mrvlasyuk/code_improver_gpt.git
-cd code_improver_gpt
+git clone https://github.com/mrvlasyuk/tiny_code_improver.git
+cd tiny_code_improver
 pip install -r requirements.txt
 ```
 
