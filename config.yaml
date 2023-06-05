@@ -5,7 +5,6 @@ files:
   - chatgpt.py
   - config.yaml
   - code_improver.py
-  - Story_bullet_points.md
   - readme.md
 
 #
