@@ -1,8 +1,8 @@
 import yaml
 from loguru import logger
 
-import utils
-from chatgpt import ChatGPT
+from . import utils
+from .chatgpt import ChatGPT
 
 
 class CodeImprover:
@@ -106,7 +106,11 @@ class CodeImprover:
                 last_output = self.generate_reply(prompt)
 
 
-if __name__ == "__main__":
+def main():
     logger.info("Starting CodeImprover")
     code_improver = CodeImprover("config.yaml")
     code_improver.start_interactive_dialog()
+
+
+if __name__ == "__main__":
+    main()

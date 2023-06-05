@@ -1,6 +1,6 @@
 import asyncio
 
-import utils
+from . import utils
 
 
 class ChatGPT:
