@@ -6,7 +6,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         "openai",
-        "python-dotenv",
+        "platformdirs",
         "tiktoken",
         "prompt_toolkit",
         "loguru",

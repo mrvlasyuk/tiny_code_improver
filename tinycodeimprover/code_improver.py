@@ -3,6 +3,7 @@ from loguru import logger
 
 from . import utils
 from .chatgpt import ChatGPT
+from .config import CodeImproverConfig, ProjectConfig
 
 
 class CodeImprover:
@@ -108,7 +109,14 @@ class CodeImprover:
 
 def main():
     logger.info("Starting CodeImprover")
-    code_improver = CodeImprover("config.yaml")
+    if not CodeImproverConfig.try_load_openai_key():
+        return
+
+    path = ProjectConfig.get_config_path("code_improver.yaml")
+    if not path:
+        return
+
+    code_improver = CodeImprover(path)
     code_improver.start_interactive_dialog()
 
 

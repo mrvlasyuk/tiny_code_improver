@@ -2,12 +2,8 @@ import os
 import traceback
 
 import openai
-import dotenv
 import tiktoken
 import prompt_toolkit as pt
-
-dotenv.load_dotenv()
-openai.api_key = os.environ["OPENAI_KEY"]
 
 
 OPENAI_OPTIONS = {
