@@ -10,7 +10,6 @@ TinyCodeImprover is a tiny project designed to help developers work with code in
 ## Table of Contents
 
 - [Installation](#installation)
-- [Configuration](#configuration)
 - [Usage and Examples](#usage-and-examples)
 - [Features and Functionality](#features-and-functionality)
 - [Success Stories and Use Cases](#success-stories-and-use-cases)
@@ -19,44 +18,32 @@ TinyCodeImprover is a tiny project designed to help developers work with code in
 
 ## Installation
 
-Clone the repository and navigate to the project directory and install the required packages:
+Install TinyCodeImprover using pip:
 
 ```bash
-git clone https://github.com/mrvlasyuk/tiny_code_improver.git
-cd tiny_code_improver
-pip install -r requirements.txt
+pip3 install -U git+https://github.com/mrvlasyuk/tiny_code_improver
 ```
 
-Create a `.env` file in the project directory and add your OpenAI API key:
+## Usage and Examples
 
+To start using TinyCodeImprover, run the `improve_code` command. It will tell you where to put your OpenAI API key.
+
+```bash
+./improve_code
 ```
-OPENAI_KEY=your_api_key_here
-```
 
-## Configuration
-
-Edit the `config.yaml` file to list the directory and files of your project:
+This will create a `code_improver.yaml` file in your current directory. Edit this file to add the files you want to provide to the context:
 
 ```yaml
 project_name: YourProjectName
-directory: "path/to/your/project"
+directory: "."
 files:
   - file1.py
   - file2.py
   - file3.py
 ```
 
-This will allow TinyCodeImprover to include the specified files in the GPT-4 prompt context.
-
-## Usage and Examples
-
-To start using TinyCodeImprover, run the `code_improver.py` script:
-
-```bash
-python code_improver.py
-```
-
-This will start an interactive dialog with GPT-4. You can ask questions about your code, request it to fix issues, find bugs, or even write new features. For example:
+Now, run the `improve_code` again to start an interactive dialog with GPT-4. You can ask questions about your code, request it to fix issues, find bugs, or even write new features. For example:
 
 ```
 User: How can I improve the error handling in utils.py?
@@ -67,7 +54,7 @@ You can also use special commands like `.critic` to ask the model to critique it
 ## Features and Functionality
 
 - **Interactive dialog**: TinyCodeImprover allows you to start an interactive dialog with GPT-4, making it easy to ask questions about your code, request it to fix issues, find bugs, etc.
-- **Critic feature**: After asking the model to fix or recommend something, you can use the `.critic` command to ask it to critique its own answer. This helps in identifying errors in its own logic. In my experience he found bugs in his own code in ~30% of cases.
+- **Critic feature**: After asking the model to fix or recommend something, you can use the `.critic` command to ask it to critique its own answer. This helps in identifying errors in its own logic. In my experience, it found bugs in its own code in ~30% of cases.
 - **Customizable prompts**: You can easily customize prompts in TinyCodeImprover, which helps in getting more accurate and relevant responses from GPT-4.
 
 ## Success Stories and Use Cases
@@ -82,6 +69,7 @@ TinyCodeImprover consists of several Python files:
 
 - `utils.py`: Contains utility functions and classes for working with OpenAI API and handling user input.
 - `chatgpt.py`: Implements the main ChatGPT class, which handles communication with GPT-4 and manages the conversation context.
+- `config.py`: Handles the configuration of the project, including loading the `code_improver.yaml` file and managing the OpenAI API key.
 - `code_improver.py`: The main script that starts the interactive dialog and processes user commands.
 
 ## License

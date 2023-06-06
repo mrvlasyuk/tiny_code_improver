@@ -3,8 +3,8 @@ directory: "."
 files:
   - tinycodeimprover/utils.py
   - tinycodeimprover/chatgpt.py
+  - tinycodeimprover/config.py
   - tinycodeimprover/code_improver.py
-  - tinycodeimprover/requirements.txt
   - tinycodeimprover/config_template.yaml
   #
   - code_improver.yaml
@@ -17,7 +17,7 @@ model: gpt-4 # gpt-3.5-turbo
 #
 role: "You play the role of a professional developer obsessed with clean code."
 #
-critic_prompt: "You are a researcher tasked with investigating the previous response provided. Split the response to logic parts and list the flaws and faulty logic for each part. Let's work this out in a step-by-step way to be sure we have all the errors:"
+critic_prompt: "You are a researcher tasked with investigating the previous response provided. Split the response to parts and list the flaws and faulty logic for each part. Let's work this out in a step-by-step way to be sure we have all the errors:"
 #
 resolver_prompt: "You are a resolver tasked with 1) Improving the initial answer by fixing all the errors the researcher found, and 2) Printing the improved answer in full. Let's work this out in a step-by-step way to be sure we have the right answer:"
 #
