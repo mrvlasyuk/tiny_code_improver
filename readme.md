@@ -29,7 +29,7 @@ pip3 install -U git+https://github.com/mrvlasyuk/tiny_code_improver
 To start using TinyCodeImprover, run the `improve_code` command. It will tell you where to put your OpenAI API key.
 
 ```bash
-./improve_code
+improve_code
 ```
 
 This will create a `code_improver.yaml` file in your current directory. Edit this file to add the files you want to provide to the context:
