@@ -12,9 +12,7 @@ class CodeImprover:
         self.texts = {}
         self.files = []
         self.config = None
-        self.steps_prompt = None
-        self.critic_prompt = None
-        self.resolver_prompt = None
+        self.replaces = {}
         #
         self.load_config(yaml_path)
         self.load_texts()
@@ -23,16 +21,13 @@ class CodeImprover:
         self.full_text = self.get_full_text()
         #
         self.gpt.add_user_message(self.full_text)
-        logger.info(f"Prefix: {self.full_text[:500]}\n...")
-        logger.info(f"Files added to context: {self.files}")
-        #
+        self.log_initial_context()
 
     def load_config(self, yaml_path):
         with open(yaml_path) as config_file:
             self.config = yaml.safe_load(config_file)
-        self.steps_prompt = self.config["step_by_step_prompt"]
-        self.critic_prompt = self.config["critic_prompt"]
-        self.resolver_prompt = self.config["resolver_prompt"]
+        prompts = self.config["prompts"]
+        self.replaces = {f".{name}": prompt for name, prompt in prompts.items()}
 
     def load_texts(self):
         directory = self.config["directory"]
@@ -51,9 +46,14 @@ class CodeImprover:
             if path in files
         ]
         full_text = "\n".join(texts)
-        num_tokens = self.gpt.get_num_tokens_for_text(full_text)
-        print(f"Number of tokens in {files} = {num_tokens}")
         return full_text
+
+    def log_initial_context(self):
+        num_tokens = self.gpt.get_num_tokens_for_text(self.full_text)
+        text_info = f"\nPrefix: {self.full_text[:500]}\n...\n"
+        text_info += f"Files: {self.files}\n"
+        text_info += f"Number of tokens = {num_tokens}\n"
+        logger.info(text_info)
 
     def generate_reply(self, prompt):
         return self.gpt.display_reply_sync(prompt)
@@ -64,18 +64,18 @@ class CodeImprover:
         print(f"File '{path}' has been updated.")
 
     def fix_prompt(self, prompt):
-        # Shortcut for "Let's think step-by-step"
-        steps_shortcut = ".sbs"
-        if steps_shortcut in prompt:
-            prompt = prompt.replace(steps_shortcut, self.steps_prompt)
-        logger.info(f"Prompt: {prompt}")
+        for cmd, text in self.replaces.items():
+            if cmd in prompt:
+                prompt = prompt.replace(cmd, text)
+
+        logger.info(f"\nPrompt: {prompt}")
         return prompt
 
     def start_interactive_dialog(self):
         logger.info("Starting interactive dialog. Type 'exit' to end the conversation.")
         last_output = ""
-        cmds = [".exit", ".regenerate", ".critic", ".resolver"]
-        cmds += [".update", ".append", ".sbs"]
+        cmds = [".exit", ".regenerate", ".update", ".append"]
+        cmds += list(self.replaces.keys())
         cmd_input = utils.get_prompt_session(cmds=cmds)
         while True:
             try:
@@ -92,10 +92,6 @@ class CodeImprover:
                 break
             elif prompt == ".regenerate":
                 last_output = self.gpt.regenerate_last_reply()
-            elif prompt == ".critic":
-                last_output = self.generate_reply(self.critic_prompt)
-            elif prompt == ".resolver":
-                last_output = self.generate_reply(self.resolver_prompt)
             elif prompt.startswith(".update "):
                 file_path = prompt.split(" ")[-1]
                 self.update_file(file_path, last_output)
