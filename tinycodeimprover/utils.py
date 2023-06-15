@@ -13,12 +13,19 @@ OPENAI_OPTIONS = {
     "presence_penalty": 0,
 }
 
-MAX_TOKENS = {"gpt-4": 8000, "gpt-3.5-turbo": 4000}
+MAX_TOKENS = {
+    "gpt-4": 8000,
+    "gpt-4-0613": 8000,
+    #
+    "gpt-3.5-turbo": 4000,
+    "gpt-3.5-turbo-0613": 4000,
+    "gpt-3.5-turbo-16k": 16000,
+}
 
 
 class Model:
     def __init__(self, model_name):
-        assert model_name in ("gpt-4", "gpt-3.5-turbo")
+        assert model_name in MAX_TOKENS
         self.model = model_name
         self.max_tokens = MAX_TOKENS[model_name]
         self.encoding = self.get_encoding()
