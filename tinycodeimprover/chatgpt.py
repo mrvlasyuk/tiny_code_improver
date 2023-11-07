@@ -1,3 +1,4 @@
+import time
 import asyncio
 
 from . import utils
@@ -9,13 +10,15 @@ class ChatGPT:
         role,
         model_name="gpt-4",
         prev_messages=None,
+        max_tokens=None,
     ):
         self.role = role
         self.system_message = {"role": "system", "content": role}
 
         self.prev_messages = prev_messages or []
-        self.model = utils.Model(model_name)
+        self.model = utils.Model(model_name, max_tokens or 4096)
         self.min_chunk = 10
+        self.max_tokens = max_tokens
 
     async def generate_reply(self, prompt, prev_messages=None):
         my_msgs = [{"role": "user", "content": prompt}]
@@ -24,7 +27,10 @@ class ChatGPT:
         messages = [self.system_message] + cut_messages + my_msgs
 
         stream = self.model.get_gpt_reply_stream(
-            messages=messages, min_chunk=self.min_chunk
+            messages=messages,
+            min_chunk=self.min_chunk,
+            max_tokens=self.max_tokens,
+            user=int(time.time()),
         )
         async for new_text in stream:
             yield new_text

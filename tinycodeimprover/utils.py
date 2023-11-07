@@ -1,4 +1,3 @@
-import os
 import traceback
 
 import openai
@@ -13,22 +12,13 @@ OPENAI_OPTIONS = {
     "presence_penalty": 0,
 }
 
-MAX_TOKENS = {
-    "gpt-4": 8000,
-    "gpt-4-0613": 8000,
-    #
-    "gpt-3.5-turbo": 4000,
-    "gpt-3.5-turbo-0613": 4000,
-    "gpt-3.5-turbo-16k": 16000,
-}
-
 
 class Model:
-    def __init__(self, model_name):
-        assert model_name in MAX_TOKENS
+    def __init__(self, model_name, max_tokens):
         self.model = model_name
-        self.max_tokens = MAX_TOKENS[model_name]
+        self.max_tokens = max_tokens
         self.encoding = self.get_encoding()
+        self.api = openai.AsyncOpenAI(api_key=openai.api_key)
 
     def get_encoding(self):
         """Returns the encoding used by a model."""
@@ -56,22 +46,26 @@ class Model:
 
     ##########
 
-    async def get_gpt_reply_stream(self, messages, user=None, min_chunk=100):
+    async def get_gpt_reply_stream(
+        self, messages, user=None, min_chunk=100, max_tokens=None
+    ):
         used_tokens = self.get_num_tokens_for_msgs(messages)
         tokens_left = self.max_tokens - used_tokens
-        options = {**OPENAI_OPTIONS, "max_tokens": tokens_left}
         print(f"{used_tokens = }, {tokens_left = }")
+        if max_tokens is not None:
+            tokens_left = min(tokens_left, max_tokens)
+        options = {**OPENAI_OPTIONS, "max_tokens": tokens_left}
         assert tokens_left > 0, "Too many tokens in the context"
 
         try:
-            stream = await openai.ChatCompletion.acreate(
+            stream = await self.api.chat.completions.create(
                 model=self.model,
                 messages=messages,
                 stream=True,
                 user=str(user),
                 **options,
             )
-        except openai.error.RateLimitError:
+        except openai.RateLimitError:
             traceback.print_exc()
             yield "(Sorry, that model is currently overloaded. Try later)"
             return
@@ -80,10 +74,8 @@ class Model:
         collected_answer = ""
 
         async for chunk in stream:
-            delta = chunk.choices[0].delta
-            if "content" not in delta:
-                continue
-            collected_answer += delta.content
+            delta = chunk.choices[0].delta.content or ""
+            collected_answer += delta
             new_text = collected_answer.strip()
             if len(new_text) - len(prev_text) < min_chunk:
                 continue

@@ -17,7 +17,10 @@ class CodeImprover:
         self.load_config(yaml_path)
         self.load_texts()
 
-        self.gpt = ChatGPT(role=self.config["role"], model_name=self.config["model"])
+        conf = self.config
+        self.gpt = ChatGPT(
+            role=conf["role"], model_name=conf["model"], max_tokens=conf["max_tokens"]
+        )
         self.full_text = self.get_full_text()
         #
         self.gpt.add_user_message(self.full_text)
