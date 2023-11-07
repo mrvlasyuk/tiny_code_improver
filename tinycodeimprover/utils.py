@@ -14,9 +14,10 @@ OPENAI_OPTIONS = {
 
 
 class Model:
-    def __init__(self, model_name, max_tokens):
+    def __init__(self, model_name, max_output_tokens, max_context_tokens):
         self.model = model_name
-        self.max_tokens = max_tokens
+        self.max_output_tokens = max_output_tokens
+        self.max_context_tokens = max_context_tokens
         self.encoding = self.get_encoding()
         self.api = openai.AsyncOpenAI(api_key=openai.api_key)
 
@@ -46,14 +47,11 @@ class Model:
 
     ##########
 
-    async def get_gpt_reply_stream(
-        self, messages, user=None, min_chunk=100, max_tokens=None
-    ):
+    async def get_gpt_reply_stream(self, messages, user=None, min_chunk=100):
         used_tokens = self.get_num_tokens_for_msgs(messages)
-        tokens_left = self.max_tokens - used_tokens
-        print(f"{used_tokens = }, {tokens_left = }")
-        if max_tokens is not None:
-            tokens_left = min(tokens_left, max_tokens)
+        context_tokens_left = self.max_context_tokens - used_tokens
+        tokens_left = min(context_tokens_left, self.max_output_tokens)
+        print(f"{used_tokens = }, {context_tokens_left = }")
         options = {**OPENAI_OPTIONS, "max_tokens": tokens_left}
         assert tokens_left > 0, "Too many tokens in the context"
 

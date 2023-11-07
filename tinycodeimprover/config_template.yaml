@@ -3,9 +3,12 @@ directory: "."
 files: []
 
 #
-model: gpt-4 # gpt-3.5-turbo
+model: gpt-4-1106-preview # gpt-3.5-turbo
+max_output_tokens: 4096
+max_context_tokens: 128000
+
 #
-role: "You play the role of a professional developer obsessed with clean code."
+role: "Let’s combine our programming command and clear thinking to quickly and accurately decipher the answer in the step-by-step approach. This is very important to my career."
 #
 prompts:
   critic: "You are a researcher tasked with investigating the previous response provided. Split the response to logic parts and list the flaws and faulty logic for each part. Let's work this out in a step-by-step way to be sure we have all the errors:"

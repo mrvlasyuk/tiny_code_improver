@@ -10,15 +10,15 @@ class ChatGPT:
         role,
         model_name="gpt-4",
         prev_messages=None,
-        max_tokens=None,
+        max_output_tokens=4096,
+        max_context_tokens=None,
     ):
         self.role = role
         self.system_message = {"role": "system", "content": role}
 
         self.prev_messages = prev_messages or []
-        self.model = utils.Model(model_name, max_tokens or 4096)
+        self.model = utils.Model(model_name, max_output_tokens, max_context_tokens)
         self.min_chunk = 10
-        self.max_tokens = max_tokens
 
     async def generate_reply(self, prompt, prev_messages=None):
         my_msgs = [{"role": "user", "content": prompt}]
@@ -29,7 +29,6 @@ class ChatGPT:
         stream = self.model.get_gpt_reply_stream(
             messages=messages,
             min_chunk=self.min_chunk,
-            max_tokens=self.max_tokens,
             user=int(time.time()),
         )
         async for new_text in stream:

@@ -19,7 +19,10 @@ class CodeImprover:
 
         conf = self.config
         self.gpt = ChatGPT(
-            role=conf["role"], model_name=conf["model"], max_tokens=conf["max_tokens"]
+            role=conf["role"],
+            model_name=conf["model"],
+            max_context_tokens=conf["max_context_tokens"],
+            max_output_tokens=conf["max_output_tokens"],
         )
         self.full_text = self.get_full_text()
         #

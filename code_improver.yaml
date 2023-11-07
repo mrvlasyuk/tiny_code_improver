@@ -13,8 +13,9 @@ files:
 
 
 #
-model: gpt-4 # gpt-3.5-turbo
-max_tokens: 8000
+model: gpt-4-1106-preview # gpt-3.5-turbo
+max_output_tokens: 4096
+max_context_tokens: 128000
 #
 role: "You play the role of a professional developer obsessed with clean code."
 #
