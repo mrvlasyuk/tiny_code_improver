@@ -1,4 +1,6 @@
+import glob
 import yaml
+import chardet
 from loguru import logger
 
 from . import utils
@@ -10,7 +12,6 @@ class CodeImprover:
     def __init__(self, yaml_path):
         logger.info(f"Initializing CodeImprover for {yaml_path}")
         self.texts = {}
-        self.files = []
         self.config = None
         self.replaces = {}
         #
@@ -35,13 +36,21 @@ class CodeImprover:
         prompts = self.config["prompts"]
         self.replaces = {f".{name}": prompt for name, prompt in prompts.items()}
 
+    def _load_one_text(self, full_path):
+        with open(full_path, "rb") as fp:
+            result = chardet.detect(fp.read())
+            encoding = result["encoding"]
+
+        with open(full_path, "r", encoding=encoding) as fp:
+            self.texts[full_path] = fp.read()
+
     def load_texts(self):
         directory = self.config["directory"]
-        self.files = self.config["files"]
+        masks = self.config["files"]
         self.texts = {}
-        for path in self.files:
-            with open(f"{directory}/{path}") as fp:
-                self.texts[path] = fp.read()
+        for mask in masks:
+            for path in glob.glob(f"{directory}/{mask}"):
+                self._load_one_text(path)
 
     def get_full_text(self, files=None):
         files = list(files or self.texts.keys())
@@ -55,9 +64,10 @@ class CodeImprover:
         return full_text
 
     def log_initial_context(self):
+        file_names = list(self.texts.keys())
         num_tokens = self.gpt.get_num_tokens_for_text(self.full_text)
         text_info = f"\nPrefix: {self.full_text[:500]}\n...\n"
-        text_info += f"Files: {self.files}\n"
+        text_info += f"Files: {file_names}\n"
         text_info += f"Number of tokens = {num_tokens}\n"
         logger.info(text_info)
 

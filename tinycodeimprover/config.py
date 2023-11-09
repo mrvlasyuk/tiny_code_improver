@@ -1,4 +1,5 @@
 import os
+import glob
 import yaml
 import shutil
 
@@ -74,13 +75,14 @@ class ProjectConfig:
 
         os.chdir(os.path.dirname(found_path))
         dir_name = config.get("directory", ".")
-        files = config.get("files", [])
-        if not files:
+        masks = config.get("files", [])
+        if not masks:
             print(f"{found_path}: No files specified.")
             return None
 
-        for file in files:
-            if not os.path.exists(os.path.join(dir_name, file)):
-                print(f"{found_path}: File {file} does not exist.")
-                return None
+        for mask in masks:
+            for path in glob.glob(f"{dir_name}/{mask}"):
+                if not os.path.exists(path):
+                    print(f"{found_path}: File {path} does not exist.")
+                    return None
         return found_path

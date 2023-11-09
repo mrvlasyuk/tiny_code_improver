@@ -1,10 +1,7 @@
 project_name: TinyCodeImprover
 directory: "."
 files:
-  - tinycodeimprover/utils.py
-  - tinycodeimprover/chatgpt.py
-  - tinycodeimprover/config.py
-  - tinycodeimprover/code_improver.py
+  - tinycodeimprover/*.py
   - tinycodeimprover/config_template.yaml
   #
   - code_improver.yaml
