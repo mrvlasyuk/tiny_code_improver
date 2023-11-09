@@ -14,12 +14,15 @@ OPENAI_OPTIONS = {
 
 
 class Model:
-    def __init__(self, model_name, max_output_tokens, max_context_tokens):
+    def __init__(
+        self, model_name, max_output_tokens, max_context_tokens, json_mode=False
+    ):
         self.model = model_name
         self.max_output_tokens = max_output_tokens
         self.max_context_tokens = max_context_tokens
         self.encoding = self.get_encoding()
         self.api = openai.AsyncOpenAI(api_key=openai.api_key)
+        self.json_mode = json_mode
 
     def get_encoding(self):
         """Returns the encoding used by a model."""
@@ -49,11 +52,18 @@ class Model:
 
     async def get_gpt_reply_stream(self, messages, user=None, min_chunk=100):
         used_tokens = self.get_num_tokens_for_msgs(messages)
-        context_tokens_left = self.max_context_tokens - used_tokens
-        tokens_left = min(context_tokens_left, self.max_output_tokens)
-        print(f"{used_tokens = }, {context_tokens_left = }")
+        if self.max_context_tokens:
+            context_tokens_left = self.max_context_tokens - used_tokens
+            tokens_left = min(context_tokens_left, self.max_output_tokens)
+            print(f"{used_tokens = }, {context_tokens_left = }")
+            assert tokens_left > 0, "Too many tokens in the context"
+        else:
+            print(f"{used_tokens = }")  
+            tokens_left = None
+
         options = {**OPENAI_OPTIONS, "max_tokens": tokens_left}
-        assert tokens_left > 0, "Too many tokens in the context"
+        if self.json_mode:
+            options["response_format"] = {"type": "json_object"}
 
         try:
             stream = await self.api.chat.completions.create(

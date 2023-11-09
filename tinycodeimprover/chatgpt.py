@@ -12,12 +12,13 @@ class ChatGPT:
         prev_messages=None,
         max_output_tokens=4096,
         max_context_tokens=None,
+        json_mode=False,
     ):
         self.role = role
         self.system_message = {"role": "system", "content": role}
 
         self.prev_messages = prev_messages or []
-        self.model = utils.Model(model_name, max_output_tokens, max_context_tokens)
+        self.model = utils.Model(model_name, max_output_tokens, max_context_tokens, json_mode=json_mode)
         self.min_chunk = 10
 
     async def generate_reply(self, prompt, prev_messages=None):
