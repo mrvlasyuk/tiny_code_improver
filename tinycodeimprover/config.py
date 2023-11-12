@@ -81,8 +81,8 @@ class ProjectConfig:
             return None
 
         for mask in masks:
-            for path in glob.glob(f"{dir_name}/{mask}"):
-                if not os.path.exists(path):
-                    print(f"{found_path}: File {path} does not exist.")
-                    return None
+            files = glob.glob(f"{dir_name}/{mask}")
+            if not files:
+                print(f"{found_path}: No files found for mask '{mask}'")
+                return None
         return found_path
