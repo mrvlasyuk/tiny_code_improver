@@ -11,6 +11,7 @@ setup(
         "prompt_toolkit",
         "loguru",
         "PyYAML",
+        "chardet",
     ],
     entry_points={
         "console_scripts": [
