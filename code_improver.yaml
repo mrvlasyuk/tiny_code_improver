@@ -8,9 +8,8 @@ files:
   - readme.md
   - setup.py
 
-
 #
-model: gpt-4-1106-preview # gpt-3.5-turbo
+model: gpt-4-turbo-preview # gpt-3.5-turbo
 max_output_tokens: 4096
 max_context_tokens: 128000
 #
@@ -20,6 +19,6 @@ prompts:
   critic: "You are a researcher tasked with investigating the previous response provided. Split the response to logic parts and list the flaws and faulty logic for each part. Let's work this out in a step-by-step way to be sure we have all the errors:"
 
   resolver: "You are a resolver tasked with 1) Improving the initial answer by fixing all the errors the researcher found, and 2) Printing the improved answer in full. Let's work this out in a step-by-step way to be sure we have the right answer:"
-  
-  # steb-by-bstep prompt:
-  sbs: "Let's work this out in a step-by-step way to be sure we have the right answer:" 
+
+  # steb-by-step prompt:
+  sbs: "Let's work this out in a step-by-step way to be sure we have the right answer:"

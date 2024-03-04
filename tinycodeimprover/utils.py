@@ -1,15 +1,13 @@
 import traceback
 
-import openai
 import tiktoken
 import prompt_toolkit as pt
+from litellm import acompletion, RateLimitError
 
 
-OPENAI_OPTIONS = {
+OPTIONS = {
     "temperature": 0.3,
     "top_p": 1,
-    "frequency_penalty": 0,
-    "presence_penalty": 0,
 }
 
 
@@ -21,7 +19,6 @@ class Model:
         self.max_output_tokens = max_output_tokens
         self.max_context_tokens = max_context_tokens
         self.encoding = self.get_encoding()
-        self.api = openai.AsyncOpenAI(api_key=openai.api_key)
         self.json_mode = json_mode
 
     def get_encoding(self):
@@ -58,22 +55,22 @@ class Model:
             print(f"{used_tokens = }, {context_tokens_left = }")
             assert tokens_left > 0, "Too many tokens in the context"
         else:
-            print(f"{used_tokens = }")  
+            print(f"{used_tokens = }")
             tokens_left = None
 
-        options = {**OPENAI_OPTIONS, "max_tokens": tokens_left}
+        options = {**OPTIONS, "max_tokens": tokens_left}
         if self.json_mode:
             options["response_format"] = {"type": "json_object"}
 
         try:
-            stream = await self.api.chat.completions.create(
+            stream = await acompletion(
                 model=self.model,
                 messages=messages,
                 stream=True,
                 user=str(user),
                 **options,
             )
-        except openai.RateLimitError:
+        except RateLimitError:
             traceback.print_exc()
             yield "(Sorry, that model is currently overloaded. Try later)"
             return

@@ -124,7 +124,7 @@ class CodeImprover:
 
 def main():
     logger.info("Starting CodeImprover")
-    if not CodeImproverConfig.try_load_openai_key():
+    if not CodeImproverConfig.try_load_api_keys():
         return
 
     path = ProjectConfig.get_config_path("code_improver.yaml")
