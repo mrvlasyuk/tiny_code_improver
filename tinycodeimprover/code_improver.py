@@ -42,7 +42,10 @@ class CodeImprover:
             encoding = result["encoding"]
 
         with open(full_path, "r", encoding=encoding) as fp:
-            self.texts[full_path] = fp.read()
+            try:
+                return fp.read()
+            except UnicodeDecodeError:
+                return open(full_path, "r").read()
 
     def load_texts(self):
         directory = self.config["directory"]
@@ -50,7 +53,7 @@ class CodeImprover:
         self.texts = {}
         for mask in masks:
             for path in glob.glob(f"{directory}/{mask}"):
-                self._load_one_text(path)
+                self.texts[path] = self._load_one_text(path)
 
     def get_full_text(self, files=None):
         files = list(files or self.texts.keys())
