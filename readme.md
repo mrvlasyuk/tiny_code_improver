@@ -1,7 +1,6 @@
 # TinyCodeImprover
 
-
-TinyCodeImprover is a tiny project designed to help developers work with code in the context of an entire project using GPT-4. It simplifies the process of getting help from GPT by allowing you to easily add files from your project to the prompt context. With TinyCodeImprover, you can ask questions about your code, request it to fix issues, find bugs, or even write new features!
+TinyCodeImprover is a tiny project designed to help developers work with code in the context of an entire project using GPT-4, Claude, and Gemini models. It simplifies the process of getting help from AI by allowing you to easily add files from your project to the prompt context. With TinyCodeImprover, you can ask questions about your code, request it to fix issues, find bugs, or even write new features!
 
 ## Demo
 
@@ -26,7 +25,7 @@ pip3 install -U git+https://github.com/mrvlasyuk/tiny_code_improver
 
 ## Usage and Examples
 
-To start using TinyCodeImprover, run the `improve_code` command. It will tell you where to put your OpenAI API key.
+To start using TinyCodeImprover with GPT-4, Claude, or Gemini models, run the `improve_code` command. It will guide you on where to put your OpenAI API key or the API keys for other services if you're using Claude or Gemini.
 
 ```bash
 improve_code
