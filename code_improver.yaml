@@ -10,6 +10,12 @@ files:
 
 #
 model: gpt-4-turbo-preview # gpt-3.5-turbo
+
+# possible top models:
+# openai: gpt-4-turbo-preview, gpt-3.5-turbo
+# anthropic: claude-3-opus-20240229, claude-3-sonnet-20240229
+# google: gemini-1.5-pro
+
 max_output_tokens: 4096
 max_context_tokens: 128000
 #

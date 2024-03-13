@@ -3,11 +3,12 @@ import glob
 import yaml
 import shutil
 
-import openai
 import platformdirs
 
 
 class CodeImproverConfig:
+    APIs = ["OPENAI", "ANTHROPIC", "GEMINI"]
+
     @staticmethod
     def _get_config_path():
         config_dir = platformdirs.user_config_dir("tinycodeimprover")
@@ -17,26 +18,32 @@ class CodeImproverConfig:
     @staticmethod
     def _create_empty_config(yaml_path):
         with open(yaml_path, "w") as f:
-            yaml.dump({"OPENAI_KEY": ""}, f)
+            keys = {f"{api}_API_KEY": "" for api in CodeImproverConfig.APIs}
+            yaml.dump(keys, f)
 
     @staticmethod
-    def try_load_openai_key():
+    def try_load_api_keys():
         yaml_path = CodeImproverConfig._get_config_path()
+        print(f"\nLoading API keys from {yaml_path}\n")
         if not os.path.exists(yaml_path):
-            print(f"Please add OpenAI API key to {yaml_path}")
+            print(f"Please add your API keys to {yaml_path}")
             CodeImproverConfig._create_empty_config(yaml_path)
             return False
 
         with open(yaml_path) as f:
             config = yaml.safe_load(f)
 
-        key = config.get("OPENAI_KEY")
-        if not key:
-            print(f"Please add OpenAI API key to {yaml_path}")
+        found_any_key = False
+        for api in CodeImproverConfig.APIs:
+            if key := config.get(f"{api}_API_KEY"):
+                os.environ[f"{api}_API_KEY"] = key
+                found_any_key = True
+
+        if not found_any_key:
+            print(f"Please add your API keys to {yaml_path}")
             return False
 
-        openai.api_key = key
-        return True
+        return found_any_key
 
 
 class ProjectConfig:
