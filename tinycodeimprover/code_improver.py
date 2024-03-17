@@ -27,7 +27,6 @@ class CodeImprover:
         )
         self.full_text = self.get_full_text()
         #
-        self.gpt.add_user_message(self.full_text)
         self.log_initial_context()
 
     def load_config(self, yaml_path):
@@ -75,6 +74,9 @@ class CodeImprover:
         logger.info(text_info)
 
     def generate_reply(self, prompt):
+        is_first_prompt = not self.gpt.get_prev_messages()
+        if is_first_prompt:
+            prompt = f"{self.full_text}\n\n### Task:\n\n{prompt}"
         return self.gpt.display_reply_sync(prompt)
 
     def update_file(self, path, new_content, mode="w"):
