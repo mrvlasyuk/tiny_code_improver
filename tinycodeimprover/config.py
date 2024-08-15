@@ -7,7 +7,7 @@ import platformdirs
 
 
 class CodeImproverConfig:
-    APIs = ["OPENAI", "ANTHROPIC", "GEMINI"]
+    APIs = ["OPENAI", "ANTHROPIC", "GEMINI", "OPENROUTER"]
 
     @staticmethod
     def _get_config_path():
