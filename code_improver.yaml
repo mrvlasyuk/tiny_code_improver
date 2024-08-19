@@ -9,12 +9,13 @@ files:
   - setup.py
 
 #
-model: gpt-4-turbo-preview # gpt-3.5-turbo
+model: claude-3-5-sonnet-20240620 # gpt-3.5-turbo
 
-# possible top models:
-# openai: gpt-4-turbo-preview, gpt-3.5-turbo
-# anthropic: claude-3-opus-20240229, claude-3-sonnet-20240229
-# google: gemini-1.5-pro
+# Possible top models:
+# openai: gpt-4o
+# anthropic: claude-3-5-sonnet-20240620
+# google: gemini/gemini-1.5-pro-exp-0801
+# openrouter: openrouter/google/gemini-pro-1.5
 
 max_output_tokens: 4096
 max_context_tokens: 128000

@@ -15,7 +15,14 @@ class CodeImprover:
         self.config = None
         self.replaces = {}
         #
-        self.load_config(yaml_path)
+        with open(yaml_path) as config_file:
+            config = yaml.safe_load(config_file)
+
+        self.load_from_config(config)
+
+    def load_from_config(self, config):
+        self.config = config
+        self.load_config(self.config)
         self.load_texts()
 
         conf = self.config
@@ -30,21 +37,20 @@ class CodeImprover:
         self.log_initial_context()
 
     def load_config(self, yaml_path):
-        with open(yaml_path) as config_file:
-            self.config = yaml.safe_load(config_file)
         prompts = self.config["prompts"]
         self.replaces = {f".{name}": prompt for name, prompt in prompts.items()}
 
     def _load_one_text(self, full_path):
-        with open(full_path, "rb") as fp:
-            result = chardet.detect(fp.read())
-            encoding = result["encoding"]
+        # with open(full_path, "rb") as fp:
+        #     result = chardet.detect(fp.read())
+        #     encoding = result["encoding"]
 
-        with open(full_path, "r", encoding=encoding) as fp:
-            try:
-                return fp.read()
-            except UnicodeDecodeError:
-                return open(full_path, "r").read()
+        # with open(full_path, "r", encoding=encoding) as fp:
+        #     try:
+        #         return fp.read()
+        #     except UnicodeDecodeError:
+        #         return open(full_path, "r").read()
+        return open(full_path, "r").read()
 
     def load_texts(self):
         directory = self.config["directory"]
